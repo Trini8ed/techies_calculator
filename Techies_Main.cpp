@@ -1,7 +1,9 @@
 #include "Techies_Main.h"
 #include "ui_Techies_Main.h"
 
+//_______________
 //Data Structures
+//_______________
 
 struct resistance {
     double mag_res;
@@ -12,14 +14,32 @@ struct scenerios {
     QString name;
     int hp;
     resistance res;
+    int prox_qty;
+    int remote_qty;
     int cleared;
 };
 
 struct ability_levels {
-    int prox_level;
-    int blast_off_level;
-    int remote_level;
+    int prox_level[4];
+    int blast_off_level[4];
+    int talent_blast_off_level[4];
+    int remote_level[3];
+    int aghs_remote_level[3];
 };
+
+//_____________
+//Global Values
+//_____________
+
+
+const ability_levels levels;
+const scenerios cleared = {"Profile",1000,25,0,0,0,1};
+
+
+scenerios s1;
+scenerios s2;
+scenerios s3;
+
 
 Techies_Main::Techies_Main(QWidget *parent) :
     QMainWindow(parent),
@@ -33,171 +53,141 @@ Techies_Main::Techies_Main(QWidget *parent) :
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
 
+    //Update Profile Data
+
+    s1.name = ui->s1_text->text();
+    s1.hp = ui->s1_hp_value->value();
+    s1.res.mag_res = ui->s1_mag_res_box->value();
+    s1.res.dmg_red = ui->s1_dmg_red_box->value();
+    s1.prox_qty = ui->s1_remote_qty->text().toInt();
+    s1.remote_qty = ui->s1_prox_qty->text().toInt();
+    s1.cleared = 1;
+
+    s2.name = ui->s2_text->text();
+    s2.hp = ui->s2_hp_value->value();
+    s2.res.mag_res = ui->s2_mag_res_box->value();
+    s2.res.dmg_red = ui->s2_dmg_red_box->value();
+    s2.prox_qty = ui->s2_remote_qty->text().toInt();
+    s2.remote_qty = ui->s2_prox_qty->text().toInt();
+    s2.cleared = 1;
+
+    s3.name = ui->s3_text->text();
+    s3.hp = ui->s3_hp_value->value();
+    s3.res.mag_res = ui->s3_mag_res_box->value();
+    s3.res.dmg_red = ui->s3_dmg_red_box->value();
+    s3.prox_qty = ui->s3_remote_qty->text().toInt();
+    s3.remote_qty = ui->s3_prox_qty->text().toInt();
+    s3.cleared = 1;
+
+    input.dmg_red = ui->dmg_red->value()/100.0;
+    input.mag_res = ui->magic_res->value()/100.0;
+
+    levels = {
+        //Prox Mines 1-4
+        {200, 400, 600, 800},
+        //Blast off 1-4
+        {300, 400, 500, 600},
+        //Blast off with talent 1-4
+        {600, 700, 800, 900},
+        //Remote mines 1-4
+        {300, 450, 600},
+        //Remote mines with aghs 1-4
+        {450, 600, 750}
+    };
+
+    ui->s1_dmg_red_box->hide();
+    ui->s1_dmg_red_img->hide();
+    ui->s1_dmg_red_text->hide();
+
+    ui->s2_dmg_red_box->hide();
+    ui->s2_dmg_red_img->hide();
+    ui->s2_dmg_red_text->hide();
+
+    ui->s3_dmg_red_box->hide();
+    ui->s3_dmg_red_img->hide();
+    ui->s3_dmg_red_text->hide();
+
     updater();
 
 }
-
-//Global Values
-resistance input = {0.25,0.0};
-ability_levels levels = {1,1,1};
-scenerios s1 = {"",0,0,0,0};
-scenerios s2 = {"",0,0,0,0};
-scenerios s3 = {"",0,0,0,0};
 
 Techies_Main::~Techies_Main()
 {
     delete ui;
 }
 
-void Techies_Main::updater()
+void Techies_Main::hp_update()
 {
-    //Proximity Calculations
-    double prox_dmg;
-    if (levels.prox_level == 1){
-        prox_dmg = 200 * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
-        ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
-        ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
-        ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
-    }
-    else if (levels.prox_level == 2){
-        prox_dmg = 400 * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
-        ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
-        ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
-        ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
-    }
-    else if (levels.prox_level == 3){
-        prox_dmg = 600 * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
-        ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
-        ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
-        ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
-    }
-    else if (levels.prox_level == 4){
-        prox_dmg = 800 * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
-        ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
-        ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
-        ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
-    }
-
-    //Remote Calculations
-
-    double remote_dmg;
-    double aghs_check = 0;
-    if (ui->aghs_check->isChecked()){
-        aghs_check += 150;
-    }
-    if (levels.remote_level == 1){
-        remote_dmg = (300 + aghs_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_remote_dmg->setNum(remote_dmg * ui->amt_1->value());
-        ui->amt_2_remote_dmg->setNum(remote_dmg * ui->amt_2->value());
-        ui->amt_3_remote_dmg->setNum(remote_dmg * ui->amt_3->value());
-        ui->amt_4_remote_dmg->setNum(remote_dmg * ui->amt_4->value());
-    }
-    else if (levels.remote_level == 2){
-        remote_dmg = (450 + aghs_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_remote_dmg->setNum(remote_dmg * ui->amt_1->value());
-        ui->amt_2_remote_dmg->setNum(remote_dmg * ui->amt_2->value());
-        ui->amt_3_remote_dmg->setNum(remote_dmg * ui->amt_3->value());
-        ui->amt_4_remote_dmg->setNum(remote_dmg * ui->amt_4->value());
-    }
-    else if (levels.remote_level == 3){
-        remote_dmg = (600 + aghs_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_remote_dmg->setNum(remote_dmg * ui->amt_1->value());
-        ui->amt_2_remote_dmg->setNum(remote_dmg * ui->amt_2->value());
-        ui->amt_3_remote_dmg->setNum(remote_dmg * ui->amt_3->value());
-        ui->amt_4_remote_dmg->setNum(remote_dmg * ui->amt_4->value());
-    }
-
-    //Blast Off Calculations
-
-    double blast_off_dmg;
-    int talent_check = 0;
-    if (ui->blast_off_check->isChecked()){
-        talent_check = 300;
-    }
-    if (levels.blast_off_level == 1){
-        blast_off_dmg = (300 + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_blast_off_dmg->setNum(blast_off_dmg);
-    }
-    else if (levels.blast_off_level == 2){
-        blast_off_dmg = (400 + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_blast_off_dmg->setNum(blast_off_dmg);
-    }
-    else if (levels.blast_off_level == 3){
-        blast_off_dmg = (500 + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_blast_off_dmg->setNum(blast_off_dmg);
-    }
-    else if (levels.blast_off_level == 4){
-        blast_off_dmg = (600 + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_blast_off_dmg->setNum(blast_off_dmg);
-    }
-
     //HP Calculator
-    int remote_mines = 1;
-    if (!ui->aghs_check->isChecked()){
-        if (levels.remote_level == 1){
-            for (int i = 1; (remote_mines * 300 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-        else if (levels.remote_level == 2){
-            for (int i = 1; (remote_mines * 450 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-        else if (levels.remote_level == 3){
-            for (int i = 1; (remote_mines * 600 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
+    if (ui->aghs_check->isChecked())
+        pRemoteValues = ags_remote_levels;
+    if(levels.remotelevel > 0){
+        for (int i = 1; (remote_mines * pRemoteValues[levels.remote_level-1] * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
+            remote_mines++;
         }
     }
-    else if (ui->aghs_check->isChecked()){
-        if (levels.remote_level == 1){
-            for (int i = 1; (remote_mines * 450 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-        else if (levels.remote_level == 2){
-            for (int i = 1; (remote_mines * 600 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-        else if (levels.remote_level == 3){
-            for (int i = 1; (remote_mines * 750 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-    }
-
     ui->hp_remote_qty->setNum(remote_mines);
 
     //HP Prox Mine
     int prox_mines = 1;
-        if (levels.prox_level == 1){
-            for (int i = 1; (prox_mines * 200 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                prox_mines++;
-            }
-        }
-        else if (levels.prox_level == 2){
-            for (int i = 1; (prox_mines * 400 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                prox_mines++;
-            }
-        }
-        else if (levels.prox_level == 3){
-            for (int i = 1; (prox_mines * 600 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                prox_mines++;
-            }
-        }
-        else if (levels.prox_level == 4){
-            for (int i = 1; (prox_mines * 800 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                prox_mines++;
-            }
-        }
+    while ((prox_mines * prox_levels[levels.prox_level] * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value()){
+        prox_mines++;
+    }
 
     ui->hp_prox_qty->setNum(prox_mines);
+}
+
+void Techies_Main::prox_level()
+{
+    int prox_values[4] = {200, 400, 600, 800};
+    double prox_dmg = 0.0;
+    if(levels.prox_level > 0){
+        prox_dmg = prox_values[levels.prox_level-1] * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
+        ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
+        ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
+        ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
+        ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
+    }
+}
+
+void Techies_Main::remote_update()
+{
+    int remote_values[3] = {300, 450, 600};
+    double remote_dmg = 0.0;
+    double aghs_check = 0;
+    if (ui->aghs_check->isChecked()){
+        aghs_check += 150;
+    }
+
+    if(levels.prox_level > 0){
+        remote_dmg = (remote_values[levels.remote_level-1] + aghs_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
+        ui->amt_1_remote_dmg->setNum(remote_dmg * ui->amt_1->value());
+        ui->amt_2_remote_dmg->setNum(remote_dmg * ui->amt_2->value());
+        ui->amt_3_remote_dmg->setNum(remote_dmg * ui->amt_3->value());
+        ui->amt_4_remote_dmg->setNum(remote_dmg * ui->amt_4->value());
+    }
+}
+
+void Techies_Main::suicide_update()
+{
+    int blast_off_values[4] = {300, 400, 500, 600};
+    double blast_off_dmg = 0.0;
+    int talent_check = 0;
+    if (ui->blast_off_check->isChecked()){
+        talent_check = 300;
+    }
+    if(levels.blast_off_level > 0) {
+        blast_off_dmg = (blast_off_values[levels.blast_off_level-1] + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
+        ui->amt_blast_off_dmg->setNum(blast_off_dmg);
+    }
+}
+
+void Techies_Main::updater()
+{
+    suicide_update();
+    remote_update();
+    prox_level();
+    hp_update();
 }
 
 void Techies_Main::on_actionExit_triggered()
@@ -254,7 +244,7 @@ void Techies_Main::on_prox_level_up_clicked()
         ui->prox_level_4_img->setPixmap(unleveled);
         levels.prox_level = 1;
     }
-    specific_update();
+    scenerio_updater();
     updater();
 }
 
@@ -266,24 +256,20 @@ void Techies_Main::on_blast_off_level_up_clicked()
     if (levels.blast_off_level == 1){
         ui->blast_off_level_2_img->setPixmap(level);
         levels.blast_off_level++;
-
     }
     else if (levels.blast_off_level == 2){
         ui->blast_off_level_3_img->setPixmap(level);
         levels.blast_off_level++;
-
     }
     else if (levels.blast_off_level == 3){
         ui->blast_off_level_4_img->setPixmap(level);
         levels.blast_off_level++;
-
     }
     else if (levels.blast_off_level == 4){
         ui->blast_off_level_2_img->setPixmap(unleveled);
         ui->blast_off_level_3_img->setPixmap(unleveled);
         ui->blast_off_level_4_img->setPixmap(unleveled);
         levels.blast_off_level = 1;
-
     }
     updater();
 }
@@ -306,7 +292,7 @@ void Techies_Main::on_remote_level_up_clicked()
         ui->remote_level_3_img->setPixmap(unleveled);
         levels.remote_level = 1;
     }
-    specific_update();
+    scenerio_updater();
     updater();
 }
 
@@ -371,83 +357,113 @@ void Techies_Main::on_hp_value_valueChanged()
 
 void Techies_Main::on_save_clicked()
 {
-    QPixmap prox("images/proximity.png");
-    QPixmap remote("images/remote.png");
-
-
 
     if(ui->save_profile->currentIndex() == 0){
-        ui->s1_text->setText(ui->user_profile_name->text());
-        ui->s1_prox_qty->setText(ui->hp_prox_qty->text());
-        ui->s1_remote_qty->setText(ui->hp_remote_qty->text());
-        ui->s1_prox_text->setText("Proximity Mines To Kill: ");
-        ui->s1_remote_text->setText("Remote Mines To Kill: ");
-
-        ui->s1_prox_img->setPixmap(prox);
-        ui->s1_remote_img->setPixmap(remote);
-        ui->save_profile->setItemText(0,ui->user_profile_name->text());
+        s1.name = ui->user_profile_name->text();
+        s1.hp = ui->hp_value->value();
+        s1.res.mag_res = ui->magic_res->value();
+        s1.prox_qty = ui->hp_prox_qty->text().toInt();
+        s1.remote_qty = ui->hp_remote_qty->text().toInt();
         s1.cleared = 0;
+
+        //Disable Click Area
+        ui->frame_1->setEnabled(true);
+
+        //Hide/Show Dmg Reduction
+        if (ui->dmg_red_check->isChecked()){
+            s1.res.dmg_red = ui->dmg_red->value();
+
+            ui->s1_dmg_red_box->show();
+            ui->s1_dmg_red_img->show();
+            ui->s1_dmg_red_text->show();
+            ui->s1_dmg_red_box->setEnabled(true);
+            ui->s1_dmg_red_img->setEnabled(true);
+            ui->s1_dmg_red_text->setEnabled(true);
+        }
+        else {
+            ui->s1_dmg_red_box->hide();
+            ui->s1_dmg_red_img->hide();
+            ui->s1_dmg_red_text->hide();
+        }
+
+        //Change Combo Box Name
+        ui->save_profile->setItemText(0,s1.name);
     }
     else if(ui->save_profile->currentIndex() == 1){
-        ui->s2_text->setText(ui->user_profile_name->text());
-        ui->s2_prox_qty->setText(ui->hp_prox_qty->text());
-        ui->s2_remote_qty->setText(ui->hp_remote_qty->text());
-        ui->s2_prox_text->setText("Proximity Mines To Kill: ");
-        ui->s2_remote_text->setText("Remote Mines To Kill: ");
-
-        ui->s2_prox_img->setPixmap(prox);
-        ui->s2_remote_img->setPixmap(remote);
-        ui->save_profile->setItemText(1,ui->user_profile_name->text());
+        s2.name = ui->user_profile_name->text();
+        s2.hp = ui->hp_value->value();
+        s2.res.mag_res = ui->magic_res->value();
+        s2.prox_qty = ui->hp_prox_qty->text().toInt();
+        s2.remote_qty = ui->hp_remote_qty->text().toInt();
         s2.cleared = 0;
+
+
+        //Disable Click Area
+        ui->frame_2->setEnabled(true);
+
+        //Hide/Show Dmg Reduction
+        if (ui->dmg_red_check->isChecked()){
+            s2.res.dmg_red = ui->dmg_red->value();
+
+            ui->s2_dmg_red_box->show();
+            ui->s2_dmg_red_img->show();
+            ui->s2_dmg_red_text->show();
+            ui->s2_dmg_red_box->setEnabled(true);
+            ui->s2_dmg_red_img->setEnabled(true);
+            ui->s2_dmg_red_text->setEnabled(true);
+        }
+        else {
+            ui->s2_dmg_red_box->hide();
+            ui->s2_dmg_red_img->hide();
+            ui->s2_dmg_red_text->hide();
+        }
+
+
+        //Change Combo Box Name
+        ui->save_profile->setItemText(1,s2.name);
     }
     else if(ui->save_profile->currentIndex() == 2){
-        ui->s3_text->setText(ui->user_profile_name->text());
-        ui->s3_prox_qty->setText(ui->hp_prox_qty->text());
-        ui->s3_remote_qty->setText(ui->hp_remote_qty->text());
-        ui->s3_prox_text->setText("Proximity Mines To Kill: ");
-        ui->s3_remote_text->setText("Remote Mines To Kill: ");
-
-        ui->s3_prox_img->setPixmap(prox);
-        ui->s3_remote_img->setPixmap(remote);
-        ui->save_profile->setItemText(2,ui->user_profile_name->text());
+        s3.name = ui->user_profile_name->text();
+        s3.hp = ui->hp_value->value();
+        s3.res.mag_res = ui->magic_res->value();
+        s3.prox_qty = ui->hp_prox_qty->text().toInt();
+        s3.remote_qty = ui->hp_remote_qty->text().toInt();
         s3.cleared = 0;
+
+        //Disable Click Area
+        ui->frame_3->setEnabled(true);
+
+        //Hide/Show Dmg Reduction
+        if (ui->dmg_red_check->isChecked()){
+            s3.res.dmg_red = ui->dmg_red->value();
+
+            ui->s3_dmg_red_box->show();
+            ui->s3_dmg_red_img->show();
+            ui->s3_dmg_red_text->show();
+            ui->s3_dmg_red_box->setEnabled(true);
+            ui->s3_dmg_red_img->setEnabled(true);
+            ui->s3_dmg_red_text->setEnabled(true);
+        }
+        else {
+            ui->s3_dmg_red_box->hide();
+            ui->s3_dmg_red_img->hide();
+            ui->s3_dmg_red_text->hide();
+        }
+
+
+        //Change Combo Box Name
+        ui->save_profile->setItemText(2,s3.name);
     }
+    scenerio_updater();
 }
 
 void Techies_Main::on_clear_clicked()
 {
-    if(ui->save_profile->currentIndex() == 0){
-        ui->s1_text->setText("Profile 1");
-        ui->s1_prox_qty->setText("");
-        ui->s1_remote_qty->setText("");
-        ui->s1_prox_text->setText("");
-        ui->s1_remote_text->setText("");
+    if (ui->frame_scenerios->isHidden())
+        ui->frame_scenerios->show();
 
-        ui->s1_prox_img->clear();
-        ui->s1_remote_img->clear();
-        ui->save_profile->setItemText(0,"Profile 1");
-    }
-    else if(ui->save_profile->currentIndex() == 1){
-        ui->s2_text->setText("Profile 2");
-        ui->s2_prox_qty->setText("");
-        ui->s2_remote_qty->setText("");
-        ui->s2_prox_text->setText("");
-        ui->s2_remote_text->setText("");
-
-        ui->s2_prox_img->clear();
-        ui->s2_remote_img->clear();
-        ui->save_profile->setItemText(1,"Profile 2");
-    }
-    else if(ui->save_profile->currentIndex() == 2){
-        ui->s3_text->setText("Profile 3");
-        ui->s3_prox_qty->setText("");
-        ui->s3_remote_qty->setText("");
-        ui->s3_prox_text->setText("");
-        ui->s3_remote_text->setText("");
-
-        ui->s3_prox_img->clear();
-        ui->s3_remote_img->clear();
-        ui->save_profile->setItemText(2,"Profile 3");
+    else if (!ui->frame_scenerios->isHidden()){
+        ui->frame_scenerios->hide();
     }
 }
 
@@ -458,20 +474,102 @@ void Techies_Main::on_actionAbout_triggered()
     about.exec();
 }
 
-void Techies_Main::specific_update()
+void Techies_Main::scenerio_updater()
 {
     if (s1.cleared == 0){
-        ui->s1_prox_qty->setText(ui->hp_prox_qty->text());
-        ui->s1_remote_qty->setText(ui->hp_remote_qty->text());
+        ui->s1_text->setText(s1.name);
+        ui->s1_prox_qty->setText(QVariant(s1.prox_qty).toString());
+        ui->s1_remote_qty->setText(QVariant(s1.remote_qty).toString());
+        ui->s1_hp_value->setValue(s1.hp);
+        ui->s1_mag_res_box->setValue(s1.res.mag_res);
+        ui->s1_dmg_red_box->setValue(s1.res.dmg_red);
     }
-
-    else if (s2.cleared == 0){
-        ui->s2_prox_qty->setText(ui->hp_prox_qty->text());
-        ui->s2_remote_qty->setText(ui->hp_remote_qty->text());
+    if (s2.cleared == 0){
+        ui->s2_text->setText(s2.name);
+        ui->s2_prox_qty->setText(QVariant(s2.prox_qty).toString());
+        ui->s2_remote_qty->setText(QVariant(s2.remote_qty).toString());
+        ui->s2_hp_value->setValue(s2.hp);
+        ui->s2_mag_res_box->setValue(s2.res.mag_res);
+        ui->s2_dmg_red_box->setValue(s2.res.dmg_red);
     }
+    if (s3.cleared == 0){
+        ui->s3_text->setText(s3.name);
+        ui->s3_prox_qty->setText(QVariant(s3.prox_qty).toString());
+        ui->s3_remote_qty->setText(QVariant(s3.remote_qty).toString());
+        ui->s3_hp_value->setValue(s3.hp);
+        ui->s3_mag_res_box->setValue(s3.res.mag_res);
+        ui->s3_dmg_red_box->setValue(s3.res.dmg_red);
+    }
+}
 
-    else if (s3.cleared == 0){
-        ui->s3_prox_qty->setText(ui->hp_prox_qty->text());
-        ui->s3_remote_qty->setText(ui->hp_remote_qty->text());
+void Techies_Main::on_actionDota_2_triggered()
+{
+    exit(0);
+}
+
+void Techies_Main::on_disable_clicked()
+{
+    if(ui->save_profile->currentIndex() == 0){
+        ui->s1_text->setText(cleared.name + " " + QVariant(1).toString());
+        ui->s1_prox_qty->setText(QVariant(cleared.prox_qty).toString());
+        ui->s1_remote_qty->setText(QVariant(cleared.remote_qty).toString());
+        ui->s1_hp_value->setValue(cleared.hp);
+        ui->s1_mag_res_box->setValue(cleared.res.mag_res);
+        ui->s1_dmg_red_box->setValue(cleared.res.dmg_red);
+
+        //Disable Click Area
+        ui->frame_1->setEnabled(false);
+
+        //Hide Dmg Reduction
+        ui->s1_dmg_red_box->hide();
+        ui->s1_dmg_red_img->hide();
+        ui->s1_dmg_red_text->hide();
+
+        //Change Combo Box Name
+        ui->save_profile->setItemText(0,cleared.name + " " + QVariant(1).toString());
+        s1 = cleared;
+        s1.name = cleared.name + " " + QVariant(1).toString();
+    }
+    else if(ui->save_profile->currentIndex() == 1){
+        ui->s2_text->setText(cleared.name + " " + QVariant(2).toString());
+        ui->s2_prox_qty->setText(QVariant(cleared.prox_qty).toString());
+        ui->s2_remote_qty->setText(QVariant(cleared.remote_qty).toString());
+        ui->s2_hp_value->setValue(cleared.hp);
+        ui->s2_mag_res_box->setValue(cleared.res.mag_res);
+        ui->s2_dmg_red_box->setValue(cleared.res.dmg_red);
+
+        //Disable Click Area
+        ui->frame_2->setEnabled(false);
+
+        //Hide Dmg Reduction
+        ui->s2_dmg_red_box->hide();
+        ui->s2_dmg_red_img->hide();
+        ui->s2_dmg_red_text->hide();
+
+        //Change Combo Box Name
+        ui->save_profile->setItemText(1,cleared.name + " " + QVariant(2).toString());
+        s2 = cleared;
+        s2.name = cleared.name + " " + QVariant(2).toString();
+    }
+    else if(ui->save_profile->currentIndex() == 2){
+        ui->s3_text->setText(cleared.name + " " + QVariant(3).toString());
+        ui->s3_prox_qty->setText(QVariant(cleared.prox_qty).toString());
+        ui->s3_remote_qty->setText(QVariant(cleared.remote_qty).toString());
+        ui->s3_hp_value->setValue(cleared.hp);
+        ui->s3_mag_res_box->setValue(cleared.res.mag_res);
+        ui->s3_dmg_red_box->setValue(cleared.res.dmg_red);
+
+        //Disable Click Area
+        ui->frame_3->setEnabled(false);
+
+        //Hide Dmg Reduction
+        ui->s3_dmg_red_box->hide();
+        ui->s3_dmg_red_img->hide();
+        ui->s3_dmg_red_text->hide();
+
+        //Change Combo Box Name
+        ui->save_profile->setItemText(2,cleared.name + " " + QVariant(3).toString());
+        s3 = cleared;
+        s3.name = cleared.name + " " + QVariant(3).toString();
     }
 }
