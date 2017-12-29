@@ -52,151 +52,64 @@ Techies_Main::~Techies_Main()
 void Techies_Main::updater()
 {
     //Proximity Calculations
-    double prox_dmg;
-    if (levels.prox_level == 1){
-        prox_dmg = 200 * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
+    int prox_values[4] = {200, 400, 600, 800};
+    double prox_dmg = 0.0;
+    if(levels.prox_level > 0){
+        prox_dmg = prox_values[levels.prox_level-1] * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
         ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
         ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
         ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
         ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
     }
-    else if (levels.prox_level == 2){
-        prox_dmg = 400 * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
-        ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
-        ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
-        ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
-    }
-    else if (levels.prox_level == 3){
-        prox_dmg = 600 * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
-        ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
-        ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
-        ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
-    }
-    else if (levels.prox_level == 4){
-        prox_dmg = 800 * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
-        ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
-        ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
-        ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
-    }
-
+    
     //Remote Calculations
-
-    double remote_dmg;
+    int remote_values[3] = {300, 450, 600};
+    double remote_dmg = 0.0;
     double aghs_check = 0;
     if (ui->aghs_check->isChecked()){
         aghs_check += 150;
     }
-    if (levels.remote_level == 1){
-        remote_dmg = (300 + aghs_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
+    	
+    if(levels.prox_level > 0){
+        remote_dmg = (remote_values[levels.remote_level-1] + aghs_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
         ui->amt_1_remote_dmg->setNum(remote_dmg * ui->amt_1->value());
         ui->amt_2_remote_dmg->setNum(remote_dmg * ui->amt_2->value());
         ui->amt_3_remote_dmg->setNum(remote_dmg * ui->amt_3->value());
         ui->amt_4_remote_dmg->setNum(remote_dmg * ui->amt_4->value());
     }
-    else if (levels.remote_level == 2){
-        remote_dmg = (450 + aghs_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_remote_dmg->setNum(remote_dmg * ui->amt_1->value());
-        ui->amt_2_remote_dmg->setNum(remote_dmg * ui->amt_2->value());
-        ui->amt_3_remote_dmg->setNum(remote_dmg * ui->amt_3->value());
-        ui->amt_4_remote_dmg->setNum(remote_dmg * ui->amt_4->value());
-    }
-    else if (levels.remote_level == 3){
-        remote_dmg = (600 + aghs_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_remote_dmg->setNum(remote_dmg * ui->amt_1->value());
-        ui->amt_2_remote_dmg->setNum(remote_dmg * ui->amt_2->value());
-        ui->amt_3_remote_dmg->setNum(remote_dmg * ui->amt_3->value());
-        ui->amt_4_remote_dmg->setNum(remote_dmg * ui->amt_4->value());
-    }
-
+    
     //Blast Off Calculations
-
-    double blast_off_dmg;
+    int blast_off_values[4] = {300, 400, 500, 600};
+    double blast_off_dmg = 0.0;
     int talent_check = 0;
     if (ui->blast_off_check->isChecked()){
         talent_check = 300;
     }
-    if (levels.blast_off_level == 1){
-        blast_off_dmg = (300 + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
+    if(levels.blast_off_level > 0) {
+        blast_off_dmg = (blast_off_values[levels.blast_off_level-1] + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
         ui->amt_blast_off_dmg->setNum(blast_off_dmg);
     }
-    else if (levels.blast_off_level == 2){
-        blast_off_dmg = (400 + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_blast_off_dmg->setNum(blast_off_dmg);
-    }
-    else if (levels.blast_off_level == 3){
-        blast_off_dmg = (500 + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_blast_off_dmg->setNum(blast_off_dmg);
-    }
-    else if (levels.blast_off_level == 4){
-        blast_off_dmg = (600 + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_blast_off_dmg->setNum(blast_off_dmg);
-    }
-
+    
     //HP Calculator
+    int ags_remote_values[3] = {450, 600, 750}; // or +150?
     int remote_mines = 1;
-    if (!ui->aghs_check->isChecked()){
-        if (levels.remote_level == 1){
-            for (int i = 1; (remote_mines * 300 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-        else if (levels.remote_level == 2){
-            for (int i = 1; (remote_mines * 450 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-        else if (levels.remote_level == 3){
-            for (int i = 1; (remote_mines * 600 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
+    int *pRemoteValues = remote_values;
+    if (ui->aghs_check->isChecked())
+        pRemoteValues = ags_remote_levels;
+    if(levels.remotelevel > 0){
+        for (int i = 1; (remote_mines * pRemoteValues[levels.remote_level-1] * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
+            remote_mines++;
         }
     }
-    else if (ui->aghs_check->isChecked()){
-        if (levels.remote_level == 1){
-            for (int i = 1; (remote_mines * 450 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-        else if (levels.remote_level == 2){
-            for (int i = 1; (remote_mines * 600 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-        else if (levels.remote_level == 3){
-            for (int i = 1; (remote_mines * 750 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                remote_mines++;
-            }
-        }
-    }
-
     ui->hp_remote_qty->setNum(remote_mines);
-
+    
     //HP Prox Mine
     int prox_mines = 1;
-        if (levels.prox_level == 1){
-            for (int i = 1; (prox_mines * 200 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                prox_mines++;
-            }
+    if(levels.prox_level > 0){
+        for (int i = 1; (prox_mines * prox_levels[levels.prox_level-1] * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
+            prox_mines++;
         }
-        else if (levels.prox_level == 2){
-            for (int i = 1; (prox_mines * 400 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                prox_mines++;
-            }
-        }
-        else if (levels.prox_level == 3){
-            for (int i = 1; (prox_mines * 600 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                prox_mines++;
-            }
-        }
-        else if (levels.prox_level == 4){
-            for (int i = 1; (prox_mines * 800 * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-                prox_mines++;
-            }
-        }
-
+    }
     ui->hp_prox_qty->setNum(prox_mines);
 }
 
