@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/blast_off.png</file>
+        <file>images/leveled_talent.png</file>
+        <file>images/proximity.png</file>
+        <file>images/remote.png</file>
+        <file>images/unleveled.png</file>
+        <file>images/unleveled_talent.png</file>
+        <file>images/aghs.png</file>
+        <file>images/no_aghs.png</file>
+        <file>images/leveled.png</file>
+        <file>images/plus.png</file>
+        <file>techies.ico</file>
+        <file>images/dmg_reduction.png</file>
+        <file>images/magic_res.png</file>
+        <file>images/dmg_reduction_off.png</file>
+        <file>images/hp.png</file>
+    </qresource>
+</RCC>
