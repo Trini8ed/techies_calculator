@@ -19,7 +19,7 @@ struct scenerios {
     int cleared;
 };
 
-struct ability_levels {
+struct ability_levels_data {
     int prox_level[4];
     int blast_off_level[4];
     int talent_blast_off_level[4];
@@ -27,19 +27,35 @@ struct ability_levels {
     int aghs_remote_level[3];
 };
 
+struct ability_levels {
+    int prox_level;
+    int blast_off_level;
+    int remote_level;
+};
+
 //_____________
 //Global Values
 //_____________
 
+const ability_levels_data levels_data = {
+        //Prox Mines 1-4
+        {200, 400, 600, 800},
+        //Blast off 1-4
+        {300, 400, 500, 600},
+        //Blast off with talent 1-4
+        {600, 700, 800, 900},
+        //Remote mines 1-4
+        {300, 450, 600},
+        //Remote mines with aghs 1-4
+        {450, 600, 750}
+};
 
-const ability_levels levels;
 const scenerios cleared = {"Profile",1000,25,0,0,0,1};
-
-
+resistance input;
+ability_levels levels;
 scenerios s1;
 scenerios s2;
 scenerios s3;
-
 
 Techies_Main::Techies_Main(QWidget *parent) :
     QMainWindow(parent),
@@ -79,21 +95,12 @@ Techies_Main::Techies_Main(QWidget *parent) :
     s3.remote_qty = ui->s3_prox_qty->text().toInt();
     s3.cleared = 1;
 
-    input.dmg_red = ui->dmg_red->value()/100.0;
+    input.dmg_red = 0.0;
     input.mag_res = ui->magic_res->value()/100.0;
 
-    levels = {
-        //Prox Mines 1-4
-        {200, 400, 600, 800},
-        //Blast off 1-4
-        {300, 400, 500, 600},
-        //Blast off with talent 1-4
-        {600, 700, 800, 900},
-        //Remote mines 1-4
-        {300, 450, 600},
-        //Remote mines with aghs 1-4
-        {450, 600, 750}
-    };
+    levels.prox_level = 1;
+    levels.blast_off_level = 1;
+    levels.remote_level = 1;
 
     ui->s1_dmg_red_box->hide();
     ui->s1_dmg_red_img->hide();
@@ -108,7 +115,6 @@ Techies_Main::Techies_Main(QWidget *parent) :
     ui->s3_dmg_red_text->hide();
 
     updater();
-
 }
 
 Techies_Main::~Techies_Main()
@@ -119,67 +125,60 @@ Techies_Main::~Techies_Main()
 void Techies_Main::hp_update()
 {
     //HP Calculator
-    if (ui->aghs_check->isChecked())
-        pRemoteValues = ags_remote_levels;
-    if(levels.remotelevel > 0){
-        for (int i = 1; (remote_mines * pRemoteValues[levels.remote_level-1] * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value(); i++){
-            remote_mines++;
-        }
+    int remote_mines_dmg = levels_data.remote_level[levels.remote_level - 1];
+    if (ui->aghs_check->isChecked()){
+        remote_mines_dmg = levels_data.aghs_remote_level[levels.remote_level - 1];
     }
-    ui->hp_remote_qty->setNum(remote_mines);
-
-    //HP Prox Mine
-    int prox_mines = 1;
-    while ((prox_mines * prox_levels[levels.prox_level] * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value()){
-        prox_mines++;
+    int remote_mines_qty = 1;
+    while ((remote_mines_qty * remote_mines_dmg * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value()){
+        remote_mines_qty++;
     }
 
-    ui->hp_prox_qty->setNum(prox_mines);
+    ui->hp_prox_qty->setNum(remote_mines_qty);
+
+    int prox_mines_dmg = levels_data.prox_level[levels.prox_level - 1];
+    int prox_mines_qty = 1;
+    while ((prox_mines_qty * prox_mines_dmg * (1.0 - input.dmg_red) * (1.0 - input.mag_res)) < ui->hp_value->value()){
+        prox_mines_qty++;
+    }
+
+    ui->hp_remote_qty->setNum(prox_mines_qty);
 }
 
 void Techies_Main::prox_level()
 {
-    int prox_values[4] = {200, 400, 600, 800};
-    double prox_dmg = 0.0;
-    if(levels.prox_level > 0){
-        prox_dmg = prox_values[levels.prox_level-1] * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_prox_dmg->setNum(prox_dmg * ui->amt_1->value());
-        ui->amt_2_prox_dmg->setNum(prox_dmg * ui->amt_2->value());
-        ui->amt_3_prox_dmg->setNum(prox_dmg * ui->amt_3->value());
-        ui->amt_4_prox_dmg->setNum(prox_dmg * ui->amt_4->value());
-    }
+    int prox_dmg_output = levels_data.prox_level[levels.prox_level-1] * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
+
+    //Update Table Data
+    ui->amt_1_prox_dmg->setNum(prox_dmg_output * ui->amt_1->value());
+    ui->amt_2_prox_dmg->setNum(prox_dmg_output * ui->amt_2->value());
+    ui->amt_3_prox_dmg->setNum(prox_dmg_output * ui->amt_3->value());
+    ui->amt_4_prox_dmg->setNum(prox_dmg_output * ui->amt_4->value());
 }
 
 void Techies_Main::remote_update()
 {
-    int remote_values[3] = {300, 450, 600};
-    double remote_dmg = 0.0;
-    double aghs_check = 0;
+    int remote_level_dmg = levels_data.remote_level[levels.remote_level-1];
     if (ui->aghs_check->isChecked()){
-        aghs_check += 150;
+        remote_level_dmg = levels_data.aghs_remote_level[levels.remote_level-1];
     }
+    int remote_dmg_output = (remote_level_dmg) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
 
-    if(levels.prox_level > 0){
-        remote_dmg = (remote_values[levels.remote_level-1] + aghs_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_1_remote_dmg->setNum(remote_dmg * ui->amt_1->value());
-        ui->amt_2_remote_dmg->setNum(remote_dmg * ui->amt_2->value());
-        ui->amt_3_remote_dmg->setNum(remote_dmg * ui->amt_3->value());
-        ui->amt_4_remote_dmg->setNum(remote_dmg * ui->amt_4->value());
-    }
+    //Update Table Data
+    ui->amt_1_remote_dmg->setNum(remote_dmg_output * ui->amt_1->value());
+    ui->amt_2_remote_dmg->setNum(remote_dmg_output * ui->amt_2->value());
+    ui->amt_3_remote_dmg->setNum(remote_dmg_output * ui->amt_3->value());
+    ui->amt_4_remote_dmg->setNum(remote_dmg_output * ui->amt_4->value());
 }
 
 void Techies_Main::suicide_update()
 {
-    int blast_off_values[4] = {300, 400, 500, 600};
-    double blast_off_dmg = 0.0;
-    int talent_check = 0;
+    int blast_off_level_dmg = levels_data.blast_off_level[levels.blast_off_level - 1];
     if (ui->blast_off_check->isChecked()){
-        talent_check = 300;
+        blast_off_level_dmg = levels_data.talent_blast_off_level[levels.blast_off_level - 1];
     }
-    if(levels.blast_off_level > 0) {
-        blast_off_dmg = (blast_off_values[levels.blast_off_level-1] + talent_check) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
-        ui->amt_blast_off_dmg->setNum(blast_off_dmg);
-    }
+    int blast_off_dmg_output = (blast_off_level_dmg) * (1.0 - input.dmg_red) * (1.0 - input.mag_res);
+    ui->amt_blast_off_dmg->setNum(blast_off_dmg_output);
 }
 
 void Techies_Main::updater()
@@ -465,6 +464,7 @@ void Techies_Main::on_clear_clicked()
     else if (!ui->frame_scenerios->isHidden()){
         ui->frame_scenerios->hide();
     }
+    ui->main_grid_app->setGeometry(Techies_Main::geometry());
 }
 
 void Techies_Main::on_actionAbout_triggered()
@@ -572,4 +572,127 @@ void Techies_Main::on_disable_clicked()
         s3 = cleared;
         s3.name = cleared.name + " " + QVariant(3).toString();
     }
+}
+
+void Techies_Main::s1_qty_calc()
+{
+    int remote_mines_dmg = levels_data.remote_level[levels.remote_level - 1];
+    if (ui->aghs_check->isChecked()){
+        remote_mines_dmg = levels_data.aghs_remote_level[levels.remote_level - 1];
+    }
+    int remote_mines_qty = 1;
+    while ((remote_mines_qty * remote_mines_dmg * (1.0 - s1.res.dmg_red) * (1.0 - s1.res.mag_res)) < s1.hp){
+        remote_mines_qty++;
+    }
+
+    int prox_mines_dmg = levels_data.prox_level[levels.prox_level - 1];
+    int prox_mines_qty = 1;
+    while ((prox_mines_qty * prox_mines_dmg * (1.0 - s1.res.dmg_red) * (1.0 - s1.res.mag_res)) < s1.hp){
+        prox_mines_qty++;
+    }
+
+    s1.prox_qty = prox_mines_qty;
+    ui->s1_prox_qty->setText(QVariant(s1.prox_qty).toString());
+    s1.remote_qty = remote_mines_qty;
+    ui->s1_remote_qty->setText(QVariant(s1.remote_qty).toString());
+}
+
+void Techies_Main::s2_qty_calc()
+{
+    int remote_mines_dmg = levels_data.remote_level[levels.remote_level - 1];
+    if (ui->aghs_check->isChecked()){
+        remote_mines_dmg = levels_data.aghs_remote_level[levels.remote_level - 1];
+    }
+    int remote_mines_qty = 1;
+    while ((remote_mines_qty * remote_mines_dmg * (1.0 - s2.res.dmg_red) * (1.0 - s2.res.mag_res)) < s2.hp){
+        remote_mines_qty++;
+    }
+
+    int prox_mines_dmg = levels_data.prox_level[levels.prox_level - 1];
+    int prox_mines_qty = 1;
+    while ((prox_mines_qty * prox_mines_dmg * (1.0 - s2.res.dmg_red) * (1.0 - s2.res.mag_res)) < s2.hp){
+        prox_mines_qty++;
+    }
+
+    s2.prox_qty = prox_mines_qty;
+    ui->s2_prox_qty->setText(QVariant(s2.prox_qty).toString());
+    s2.remote_qty = remote_mines_qty;
+    ui->s2_remote_qty->setText(QVariant(s2.remote_qty).toString());
+}
+
+void Techies_Main::s3_qty_calc()
+{
+    int remote_mines_dmg = levels_data.remote_level[levels.remote_level - 1];
+    if (ui->aghs_check->isChecked()){
+        remote_mines_dmg = levels_data.aghs_remote_level[levels.remote_level - 1];
+    }
+    int remote_mines_qty = 1;
+    while ((remote_mines_qty * remote_mines_dmg * (1.0 - s3.res.dmg_red) * (1.0 - s3.res.mag_res)) < s3.hp){
+        remote_mines_qty++;
+    }
+
+    int prox_mines_dmg = levels_data.prox_level[levels.prox_level - 1];
+    int prox_mines_qty = 1;
+    while ((prox_mines_qty * prox_mines_dmg * (1.0 - s3.res.dmg_red) * (1.0 - s3.res.mag_res)) < s3.hp){
+        prox_mines_qty++;
+    }
+
+    s3.prox_qty = prox_mines_qty;
+    ui->s3_prox_qty->setText(QVariant(s3.prox_qty).toString());
+    s3.remote_qty = remote_mines_qty;
+    ui->s3_remote_qty->setText(QVariant(s3.remote_qty).toString());
+}
+
+void Techies_Main::on_s1_hp_value_valueChanged(int arg1)
+{
+    s1.hp = arg1;
+    s1_qty_calc();
+}
+
+void Techies_Main::on_s1_mag_res_box_valueChanged(double arg1)
+{
+    s1.res.mag_res = arg1 / 100.0;
+    s1_qty_calc();
+}
+
+void Techies_Main::on_s1_dmg_red_box_valueChanged(double arg1)
+{
+    s1.res.dmg_red = arg1 / 100.0;
+    s1_qty_calc();
+}
+
+void Techies_Main::on_s2_hp_value_valueChanged(int arg1)
+{
+    s2.hp = arg1;
+    s2_qty_calc();
+}
+
+void Techies_Main::on_s2_mag_res_box_valueChanged(double arg1)
+{
+    s2.res.mag_res = arg1 / 100.0;
+    s2_qty_calc();
+}
+
+void Techies_Main::on_s2_dmg_red_box_valueChanged(double arg1)
+{
+    s2.res.dmg_red = arg1 / 100.0;
+    s2_qty_calc();
+}
+
+void Techies_Main::on_s3_hp_value_valueChanged(int arg1)
+{
+    s3.hp = arg1;
+    s3_qty_calc();
+}
+
+void Techies_Main::on_s3_mag_res_box_valueChanged(double arg1)
+{
+    s3.res.mag_res = arg1 / 100.0;
+    s3_qty_calc();
+}
+
+void Techies_Main::on_s3_dmg_red_box_valueChanged(double arg1)
+{
+    s3.res.dmg_red = arg1 / 100.0;
+    s3_qty_calc();
 }
