@@ -50,7 +50,7 @@ const ability_levels_data levels_data = {
         {450, 600, 750}
 };
 
-const scenerios cleared = {"Profile",1000,25,0,0,0,1};
+const scenerios cleared = {"Profile", 1000,.25,0,0,0,1};
 resistance input;
 ability_levels levels;
 scenerios s1;
@@ -73,27 +73,27 @@ Techies_Main::Techies_Main(QWidget *parent) :
 
     s1.name = ui->s1_text->text();
     s1.hp = ui->s1_hp_value->value();
-    s1.res.mag_res = ui->s1_mag_res_box->value();
-    s1.res.dmg_red = ui->s1_dmg_red_box->value();
+    s1.res.mag_res = ui->s1_mag_res_box->value()/100.0;
+    s1.res.dmg_red = ui->s1_dmg_red_box->value()/100.0;
     s1.prox_qty = ui->s1_remote_qty->text().toInt();
     s1.remote_qty = ui->s1_prox_qty->text().toInt();
-    s1.cleared = 1;
+    s1.cleared = 0;
 
     s2.name = ui->s2_text->text();
     s2.hp = ui->s2_hp_value->value();
-    s2.res.mag_res = ui->s2_mag_res_box->value();
-    s2.res.dmg_red = ui->s2_dmg_red_box->value();
+    s2.res.mag_res = ui->s2_mag_res_box->value()/100.0;
+    s2.res.dmg_red = ui->s2_dmg_red_box->value()/100.0;
     s2.prox_qty = ui->s2_remote_qty->text().toInt();
     s2.remote_qty = ui->s2_prox_qty->text().toInt();
-    s2.cleared = 1;
+    s2.cleared = 0;
 
     s3.name = ui->s3_text->text();
     s3.hp = ui->s3_hp_value->value();
-    s3.res.mag_res = ui->s3_mag_res_box->value();
-    s3.res.dmg_red = ui->s3_dmg_red_box->value();
+    s3.res.mag_res = ui->s3_mag_res_box->value()/100.0;
+    s3.res.dmg_red = ui->s3_dmg_red_box->value()/100.0;
     s3.prox_qty = ui->s3_remote_qty->text().toInt();
     s3.remote_qty = ui->s3_prox_qty->text().toInt();
-    s3.cleared = 1;
+    s3.cleared = 0;
 
     input.dmg_red = 0.0;
     input.mag_res = ui->magic_res->value()/100.0;
@@ -102,18 +102,9 @@ Techies_Main::Techies_Main(QWidget *parent) :
     levels.blast_off_level = 1;
     levels.remote_level = 1;
 
-    ui->s1_dmg_red_box->hide();
-    ui->s1_dmg_red_img->hide();
-    ui->s1_dmg_red_text->hide();
-
-    ui->s2_dmg_red_box->hide();
-    ui->s2_dmg_red_img->hide();
-    ui->s2_dmg_red_text->hide();
-
-    ui->s3_dmg_red_box->hide();
-    ui->s3_dmg_red_img->hide();
-    ui->s3_dmg_red_text->hide();
-
+    s1_qty_calc();
+    s2_qty_calc();
+    s3_qty_calc();
     updater();
 }
 
@@ -134,7 +125,7 @@ void Techies_Main::hp_update()
         remote_mines_qty++;
     }
 
-    ui->hp_prox_qty->setNum(remote_mines_qty);
+    ui->hp_remote_qty->setNum(remote_mines_qty);
 
     int prox_mines_dmg = levels_data.prox_level[levels.prox_level - 1];
     int prox_mines_qty = 1;
@@ -142,7 +133,7 @@ void Techies_Main::hp_update()
         prox_mines_qty++;
     }
 
-    ui->hp_remote_qty->setNum(prox_mines_qty);
+    ui->hp_prox_qty->setNum(prox_mines_qty);
 }
 
 void Techies_Main::prox_level()
@@ -205,6 +196,9 @@ void Techies_Main::on_aghs_check_clicked()
         ui->aghs_check_img->setPixmap(no_aghs);
     }
     updater();
+    s1_qty_calc();
+    s2_qty_calc();
+    s3_qty_calc();
 }
 
 void Techies_Main::on_blast_off_check_clicked()
@@ -243,8 +237,10 @@ void Techies_Main::on_prox_level_up_clicked()
         ui->prox_level_4_img->setPixmap(unleveled);
         levels.prox_level = 1;
     }
-    scenerio_updater();
     updater();
+    s1_qty_calc();
+    s2_qty_calc();
+    s3_qty_calc();
 }
 
 void Techies_Main::on_blast_off_level_up_clicked()
@@ -293,6 +289,9 @@ void Techies_Main::on_remote_level_up_clicked()
     }
     scenerio_updater();
     updater();
+    s1_qty_calc();
+    s2_qty_calc();
+    s3_qty_calc();
 }
 
 void Techies_Main::on_magic_res_valueChanged(double arg1)
@@ -360,7 +359,7 @@ void Techies_Main::on_save_clicked()
     if(ui->save_profile->currentIndex() == 0){
         s1.name = ui->user_profile_name->text();
         s1.hp = ui->hp_value->value();
-        s1.res.mag_res = ui->magic_res->value();
+        s1.res.mag_res = ui->magic_res->value()/100.0;
         s1.prox_qty = ui->hp_prox_qty->text().toInt();
         s1.remote_qty = ui->hp_remote_qty->text().toInt();
         s1.cleared = 0;
@@ -368,30 +367,20 @@ void Techies_Main::on_save_clicked()
         //Disable Click Area
         ui->frame_1->setEnabled(true);
 
-        //Hide/Show Dmg Reduction
+        //Damage Reduction
         if (ui->dmg_red_check->isChecked()){
-            s1.res.dmg_red = ui->dmg_red->value();
-
-            ui->s1_dmg_red_box->show();
-            ui->s1_dmg_red_img->show();
-            ui->s1_dmg_red_text->show();
-            ui->s1_dmg_red_box->setEnabled(true);
-            ui->s1_dmg_red_img->setEnabled(true);
-            ui->s1_dmg_red_text->setEnabled(true);
+                s1.res.dmg_red = ui->dmg_red->value()/100.0;
         }
-        else {
-            ui->s1_dmg_red_box->hide();
-            ui->s1_dmg_red_img->hide();
-            ui->s1_dmg_red_text->hide();
-        }
+        else s1.res.dmg_red = 0.0;
 
         //Change Combo Box Name
         ui->save_profile->setItemText(0,s1.name);
+        scenerio_updater();
     }
     else if(ui->save_profile->currentIndex() == 1){
         s2.name = ui->user_profile_name->text();
         s2.hp = ui->hp_value->value();
-        s2.res.mag_res = ui->magic_res->value();
+        s2.res.mag_res = ui->magic_res->value()/100.0;
         s2.prox_qty = ui->hp_prox_qty->text().toInt();
         s2.remote_qty = ui->hp_remote_qty->text().toInt();
         s2.cleared = 0;
@@ -400,31 +389,22 @@ void Techies_Main::on_save_clicked()
         //Disable Click Area
         ui->frame_2->setEnabled(true);
 
-        //Hide/Show Dmg Reduction
+        //Damage Reduction
         if (ui->dmg_red_check->isChecked()){
-            s2.res.dmg_red = ui->dmg_red->value();
+                s2.res.dmg_red = ui->dmg_red->value()/100.0;
+        }
 
-            ui->s2_dmg_red_box->show();
-            ui->s2_dmg_red_img->show();
-            ui->s2_dmg_red_text->show();
-            ui->s2_dmg_red_box->setEnabled(true);
-            ui->s2_dmg_red_img->setEnabled(true);
-            ui->s2_dmg_red_text->setEnabled(true);
-        }
-        else {
-            ui->s2_dmg_red_box->hide();
-            ui->s2_dmg_red_img->hide();
-            ui->s2_dmg_red_text->hide();
-        }
+        else s2.res.dmg_red = 0.0;
 
 
         //Change Combo Box Name
         ui->save_profile->setItemText(1,s2.name);
+        scenerio_updater();
     }
     else if(ui->save_profile->currentIndex() == 2){
         s3.name = ui->user_profile_name->text();
         s3.hp = ui->hp_value->value();
-        s3.res.mag_res = ui->magic_res->value();
+        s3.res.mag_res = ui->magic_res->value()/100.0;
         s3.prox_qty = ui->hp_prox_qty->text().toInt();
         s3.remote_qty = ui->hp_remote_qty->text().toInt();
         s3.cleared = 0;
@@ -432,28 +412,17 @@ void Techies_Main::on_save_clicked()
         //Disable Click Area
         ui->frame_3->setEnabled(true);
 
-        //Hide/Show Dmg Reduction
+        //Damage Reduction
         if (ui->dmg_red_check->isChecked()){
-            s3.res.dmg_red = ui->dmg_red->value();
-
-            ui->s3_dmg_red_box->show();
-            ui->s3_dmg_red_img->show();
-            ui->s3_dmg_red_text->show();
-            ui->s3_dmg_red_box->setEnabled(true);
-            ui->s3_dmg_red_img->setEnabled(true);
-            ui->s3_dmg_red_text->setEnabled(true);
-        }
-        else {
-            ui->s3_dmg_red_box->hide();
-            ui->s3_dmg_red_img->hide();
-            ui->s3_dmg_red_text->hide();
+                s3.res.dmg_red = ui->dmg_red->value()/100.0;
         }
 
+        else s3.res.dmg_red = 0.0;
 
         //Change Combo Box Name
         ui->save_profile->setItemText(2,s3.name);
+        scenerio_updater();
     }
-    scenerio_updater();
 }
 
 void Techies_Main::on_clear_clicked()
@@ -464,7 +433,6 @@ void Techies_Main::on_clear_clicked()
     else if (!ui->frame_scenerios->isHidden()){
         ui->frame_scenerios->hide();
     }
-    ui->main_grid_app->setGeometry(Techies_Main::geometry());
 }
 
 void Techies_Main::on_actionAbout_triggered()
@@ -477,28 +445,28 @@ void Techies_Main::on_actionAbout_triggered()
 void Techies_Main::scenerio_updater()
 {
     if (s1.cleared == 0){
-        ui->s1_text->setText(s1.name);
-        ui->s1_prox_qty->setText(QVariant(s1.prox_qty).toString());
-        ui->s1_remote_qty->setText(QVariant(s1.remote_qty).toString());
+        ui->s1_mag_res_box->setValue(s1.res.mag_res*100.0);
+        ui->s1_dmg_red_box->setValue(s1.res.dmg_red*100.0);
         ui->s1_hp_value->setValue(s1.hp);
-        ui->s1_mag_res_box->setValue(s1.res.mag_res);
-        ui->s1_dmg_red_box->setValue(s1.res.dmg_red);
+        ui->s1_text->setText(s1.name);
+        ui->s1_prox_qty->setText(QString::number(s1.prox_qty));
+        ui->s1_remote_qty->setText(QString::number(s1.remote_qty));
     }
     if (s2.cleared == 0){
+        ui->s2_mag_res_box->setValue(s2.res.mag_res*100.0);
+        ui->s2_dmg_red_box->setValue(s2.res.dmg_red*100.0);
+        ui->s2_hp_value->setValue(s2.hp);
         ui->s2_text->setText(s2.name);
         ui->s2_prox_qty->setText(QVariant(s2.prox_qty).toString());
         ui->s2_remote_qty->setText(QVariant(s2.remote_qty).toString());
-        ui->s2_hp_value->setValue(s2.hp);
-        ui->s2_mag_res_box->setValue(s2.res.mag_res);
-        ui->s2_dmg_red_box->setValue(s2.res.dmg_red);
     }
     if (s3.cleared == 0){
+        ui->s3_mag_res_box->setValue(s3.res.mag_res*100.0);
+        ui->s3_dmg_red_box->setValue(s3.res.dmg_red*100.0);
+        ui->s3_hp_value->setValue(s3.hp);
         ui->s3_text->setText(s3.name);
         ui->s3_prox_qty->setText(QVariant(s3.prox_qty).toString());
         ui->s3_remote_qty->setText(QVariant(s3.remote_qty).toString());
-        ui->s3_hp_value->setValue(s3.hp);
-        ui->s3_mag_res_box->setValue(s3.res.mag_res);
-        ui->s3_dmg_red_box->setValue(s3.res.dmg_red);
     }
 }
 
@@ -510,67 +478,55 @@ void Techies_Main::on_actionDota_2_triggered()
 void Techies_Main::on_disable_clicked()
 {
     if(ui->save_profile->currentIndex() == 0){
-        ui->s1_text->setText(cleared.name + " " + QVariant(1).toString());
-        ui->s1_prox_qty->setText(QVariant(cleared.prox_qty).toString());
-        ui->s1_remote_qty->setText(QVariant(cleared.remote_qty).toString());
-        ui->s1_hp_value->setValue(cleared.hp);
-        ui->s1_mag_res_box->setValue(cleared.res.mag_res);
-        ui->s1_dmg_red_box->setValue(cleared.res.dmg_red);
+        s1 = cleared;
+        s1.name = cleared.name + " " + QVariant(1).toString();
+
+        ui->s1_text->setText(s1.name);
+        ui->s1_prox_qty->setText(QVariant(s1.prox_qty).toString());
+        ui->s1_remote_qty->setText(QVariant(s1.remote_qty).toString());
+        ui->s1_hp_value->setValue(s1.hp);
+        ui->s1_mag_res_box->setValue(s1.res.mag_res*100.0);
+        ui->s1_dmg_red_box->setValue(s1.res.dmg_red*100.0);
 
         //Disable Click Area
         ui->frame_1->setEnabled(false);
 
-        //Hide Dmg Reduction
-        ui->s1_dmg_red_box->hide();
-        ui->s1_dmg_red_img->hide();
-        ui->s1_dmg_red_text->hide();
-
         //Change Combo Box Name
         ui->save_profile->setItemText(0,cleared.name + " " + QVariant(1).toString());
-        s1 = cleared;
-        s1.name = cleared.name + " " + QVariant(1).toString();
     }
     else if(ui->save_profile->currentIndex() == 1){
-        ui->s2_text->setText(cleared.name + " " + QVariant(2).toString());
-        ui->s2_prox_qty->setText(QVariant(cleared.prox_qty).toString());
-        ui->s2_remote_qty->setText(QVariant(cleared.remote_qty).toString());
-        ui->s2_hp_value->setValue(cleared.hp);
-        ui->s2_mag_res_box->setValue(cleared.res.mag_res);
-        ui->s2_dmg_red_box->setValue(cleared.res.dmg_red);
+        s2 = cleared;
+        s2.name = cleared.name + " " + QVariant(2).toString();
+
+        ui->s2_text->setText(s2.name);
+        ui->s2_prox_qty->setText(QVariant(s2.prox_qty).toString());
+        ui->s2_remote_qty->setText(QVariant(s2.remote_qty).toString());
+        ui->s2_hp_value->setValue(s2.hp);
+        ui->s2_mag_res_box->setValue(s2.res.mag_res*100.0);
+        ui->s2_dmg_red_box->setValue(s2.res.dmg_red*100.0);
 
         //Disable Click Area
         ui->frame_2->setEnabled(false);
 
-        //Hide Dmg Reduction
-        ui->s2_dmg_red_box->hide();
-        ui->s2_dmg_red_img->hide();
-        ui->s2_dmg_red_text->hide();
-
         //Change Combo Box Name
         ui->save_profile->setItemText(1,cleared.name + " " + QVariant(2).toString());
-        s2 = cleared;
-        s2.name = cleared.name + " " + QVariant(2).toString();
     }
     else if(ui->save_profile->currentIndex() == 2){
-        ui->s3_text->setText(cleared.name + " " + QVariant(3).toString());
-        ui->s3_prox_qty->setText(QVariant(cleared.prox_qty).toString());
-        ui->s3_remote_qty->setText(QVariant(cleared.remote_qty).toString());
-        ui->s3_hp_value->setValue(cleared.hp);
-        ui->s3_mag_res_box->setValue(cleared.res.mag_res);
-        ui->s3_dmg_red_box->setValue(cleared.res.dmg_red);
+        s3 = cleared;
+        s3.name = cleared.name + " " + QVariant(3).toString();
+
+        ui->s3_text->setText(s3.name);
+        ui->s3_prox_qty->setText(QVariant(s3.prox_qty).toString());
+        ui->s3_remote_qty->setText(QVariant(s3.remote_qty).toString());
+        ui->s3_hp_value->setValue(s3.hp);
+        ui->s3_mag_res_box->setValue(s3.res.mag_res*100.0);
+        ui->s3_dmg_red_box->setValue(s3.res.dmg_red*100.0);
 
         //Disable Click Area
         ui->frame_3->setEnabled(false);
 
-        //Hide Dmg Reduction
-        ui->s3_dmg_red_box->hide();
-        ui->s3_dmg_red_img->hide();
-        ui->s3_dmg_red_text->hide();
-
         //Change Combo Box Name
         ui->save_profile->setItemText(2,cleared.name + " " + QVariant(3).toString());
-        s3 = cleared;
-        s3.name = cleared.name + " " + QVariant(3).toString();
     }
 }
 
@@ -591,10 +547,17 @@ void Techies_Main::s1_qty_calc()
         prox_mines_qty++;
     }
 
+    if (s1.cleared == 1){
+        ui->s1_prox_qty->setText("0");
+        ui->s1_remote_qty->setText("0");
+    }
+
+    else {
     s1.prox_qty = prox_mines_qty;
     ui->s1_prox_qty->setText(QVariant(s1.prox_qty).toString());
     s1.remote_qty = remote_mines_qty;
     ui->s1_remote_qty->setText(QVariant(s1.remote_qty).toString());
+    }
 }
 
 void Techies_Main::s2_qty_calc()
@@ -614,10 +577,17 @@ void Techies_Main::s2_qty_calc()
         prox_mines_qty++;
     }
 
+    if (s2.cleared == 1){
+        ui->s2_prox_qty->setText("0");
+        ui->s2_remote_qty->setText("0");
+    }
+
+    else {
     s2.prox_qty = prox_mines_qty;
     ui->s2_prox_qty->setText(QVariant(s2.prox_qty).toString());
     s2.remote_qty = remote_mines_qty;
     ui->s2_remote_qty->setText(QVariant(s2.remote_qty).toString());
+    }
 }
 
 void Techies_Main::s3_qty_calc()
@@ -637,10 +607,17 @@ void Techies_Main::s3_qty_calc()
         prox_mines_qty++;
     }
 
+    if (s3.cleared == 1){
+        ui->s3_prox_qty->setText("0");
+        ui->s3_remote_qty->setText("0");
+    }
+
+    else {
     s3.prox_qty = prox_mines_qty;
     ui->s3_prox_qty->setText(QVariant(s3.prox_qty).toString());
     s3.remote_qty = remote_mines_qty;
     ui->s3_remote_qty->setText(QVariant(s3.remote_qty).toString());
+    }
 }
 
 void Techies_Main::on_s1_hp_value_valueChanged(int arg1)
