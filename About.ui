@@ -6,20 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>397</width>
-    <height>200</height>
+    <width>250</width>
+    <height>100</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>250</width>
+    <height>100</height>
+   </size>
+  </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
-    <height>200</height>
+    <width>250</width>
+    <height>100</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -32,7 +38,7 @@
       <string notr="true">font: 75 14pt &quot;MS Shell Dlg 2&quot;;</string>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Made by Trini8ed&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Version 2.1&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Custom edition for: valeraKorol&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&quot; font-family:'verdana,arial,helvetica,sans-serif'; font-size:12pt; font-weight:400; color:#222222; background-color:#ffffff;&quot;&gt;Burnt on reddit bonfire for heresy&amp;quot;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Made by Trini8ed&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Version 2.12&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
