@@ -33,6 +33,8 @@ struct global {
     mag_abilities abilities;
 };
 
+double global_mag_res;
+
 const global array = {
      //Cloak
      {0.15,
@@ -132,6 +134,7 @@ void Magic_Res::do_magic()
         mag_res *= (1 - array.abilities.earthshaker);
     }
     ui->doubleSpinBox->setValue((1 - mag_res) * 100);
+    global_mag_res = mag_res;
 }
 
 void Magic_Res::update(QListWidgetItem *item)
