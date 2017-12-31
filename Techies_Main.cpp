@@ -685,6 +685,7 @@ void Techies_Main::on_s3_dmg_red_box_valueChanged(double arg1)
 void Techies_Main::on_magic_popout_clicked()
 {
     Magic_Res magic_res;
+    magic_res.Program = this;
     magic_res.setModal(true);
     magic_res.exec();
 }

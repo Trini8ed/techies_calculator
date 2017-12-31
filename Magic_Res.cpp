@@ -134,7 +134,7 @@ void Magic_Res::do_magic()
         mag_res *= (1 - array.abilities.earthshaker);
     }
     ui->doubleSpinBox->setValue((1 - mag_res) * 100);
-    global_mag_res = (1 - mag_res);
+    Program.magic_res( 1 - mag_res );
 }
 
 void Magic_Res::update(QListWidgetItem *item)

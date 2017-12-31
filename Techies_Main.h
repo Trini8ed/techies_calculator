@@ -18,7 +18,8 @@ class Techies_Main : public QMainWindow
 public:
     explicit Techies_Main(QWidget *parent = 0);
     ~Techies_Main();
-
+    friend void Magic_Res::do_magic();
+	
 private slots:
     void magic_res(double arg1);
 
