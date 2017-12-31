@@ -14,7 +14,7 @@ class Magic_Res : public QDialog
     Q_OBJECT
 
 public:
-    explicit Magic_Res(QWidget *parent = 0);
+    explicit Magic_Res(QWidget *parent = 0, int testint);
     ~Magic_Res();
 
 private slots:

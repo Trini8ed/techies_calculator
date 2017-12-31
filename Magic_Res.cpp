@@ -62,7 +62,7 @@ const global array = {
 
 double global_magic_res = 0.25;
 
-Magic_Res::Magic_Res(QWidget *parent) :
+Magic_Res::Magic_Res(QWidget *parent, int testint) :
     QDialog(parent),
     ui(new Ui::Magic_Res)
 {
