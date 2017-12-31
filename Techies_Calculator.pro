@@ -26,15 +26,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         Techies_Main.cpp \
-    About.cpp
+    About.cpp \
+    Magic_Res.cpp
 
 HEADERS += \
         Techies_Main.h \
-    About.h
+    About.h \
+    Magic_Res.h
 
 FORMS += \
         Techies_Main.ui \
-    About.ui
+    About.ui \
+    Magic_Res.ui
 
 CONFIG += mobility
 MOBILITY = 

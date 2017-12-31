@@ -30,13 +30,14 @@ public:
     {
         if (About->objectName().isEmpty())
             About->setObjectName(QStringLiteral("About"));
-        About->resize(397, 200);
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        About->resize(250, 100);
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(About->sizePolicy().hasHeightForWidth());
         About->setSizePolicy(sizePolicy);
-        About->setMaximumSize(QSize(400, 200));
+        About->setMinimumSize(QSize(250, 100));
+        About->setMaximumSize(QSize(250, 100));
         gridLayout = new QGridLayout(About);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         label = new QLabel(About);
@@ -54,7 +55,7 @@ public:
     void retranslateUi(QDialog *About)
     {
         About->setWindowTitle(QApplication::translate("About", "About Me", Q_NULLPTR));
-        label->setText(QApplication::translate("About", "<html><head/><body><p align=\"center\">Made by Trini8ed</p><p align=\"center\">Version 2.1</p><p align=\"center\">Custom edition for: valeraKorol</p><p align=\"center\"><span style=\" font-size:12pt;\">&quot;</span><span style=\" font-family:'verdana,arial,helvetica,sans-serif'; font-size:12pt; font-weight:400; color:#222222; background-color:#ffffff;\">Burnt on reddit bonfire for heresy&quot;</span></p></body></html>", Q_NULLPTR));
+        label->setText(QApplication::translate("About", "<html><head/><body><p align=\"center\">Made by Trini8ed</p><p align=\"center\">Version 2.12</p></body></html>", Q_NULLPTR));
     } // retranslateUi
 
 };

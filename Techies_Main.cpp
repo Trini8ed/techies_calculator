@@ -427,11 +427,19 @@ void Techies_Main::on_save_clicked()
 
 void Techies_Main::on_clear_clicked()
 {
-    if (ui->frame_scenerios->isHidden())
+    if (ui->frame_scenerios->isHidden()){
         ui->frame_scenerios->show();
-
+        Techies_Main::setMinimumHeight(720);
+        Techies_Main::setMinimumWidth(824);
+        Techies_Main::setMaximumHeight(720);
+        Techies_Main::setMaximumWidth(824);
+    }
     else if (!ui->frame_scenerios->isHidden()){
         ui->frame_scenerios->hide();
+        Techies_Main::setMinimumHeight(481);
+        Techies_Main::setMinimumWidth(791);
+        Techies_Main::setMaximumHeight(481);
+        Techies_Main::setMaximumWidth(791);
     }
 }
 
@@ -672,4 +680,16 @@ void Techies_Main::on_s3_dmg_red_box_valueChanged(double arg1)
 {
     s3.res.dmg_red = arg1 / 100.0;
     s3_qty_calc();
+}
+
+void Techies_Main::on_magic_popout_clicked()
+{
+    Magic_Res magic_res;
+    magic_res.setModal(true);
+    magic_res.exec();
+}
+
+void Techies_Main::magic_res(double arg1)
+{
+    ui->magic_res->setValue(arg1);
 }

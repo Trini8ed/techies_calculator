@@ -15,5 +15,14 @@
         <file>images/magic_res.png</file>
         <file>images/dmg_reduction_off.png</file>
         <file>images/hp.png</file>
+        <file>images/bear_res.png</file>
+        <file>images/berserkers_blood.png</file>
+        <file>images/cloak.png</file>
+        <file>images/corrosive_skin.png</file>
+        <file>images/flesh_heap.png</file>
+        <file>images/hood.png</file>
+        <file>images/null_feild.png</file>
+        <file>images/spell_sheild.png</file>
+        <file>images/glimmer.png</file>
     </qresource>
 </RCC>
