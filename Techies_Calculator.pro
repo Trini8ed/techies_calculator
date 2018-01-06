@@ -27,17 +27,20 @@ SOURCES += \
         main.cpp \
         Techies_Main.cpp \
     About.cpp \
-    Magic_Res.cpp
+    Magic_Res.cpp \
+    Dmg_Red.cpp
 
 HEADERS += \
         Techies_Main.h \
     About.h \
-    Magic_Res.h
+    Magic_Res.h \
+    Dmg_Red.h
 
 FORMS += \
         Techies_Main.ui \
     About.ui \
-    Magic_Res.ui
+    Magic_Res.ui \
+    Dmg_Red.ui
 
 CONFIG += mobility
 MOBILITY = 

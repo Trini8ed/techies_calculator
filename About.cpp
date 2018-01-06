@@ -7,7 +7,7 @@ About::About(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setWindowFlags(Qt::WindowStaysOnTopHint);
+//    setWindowFlags(Qt::WindowStaysOnTopHint);
 }
 
 About::~About()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Magic_Res</class>
- <widget class="QDialog" name="Magic_Res">
+ <class>Dmg_Red</class>
+ <widget class="QDialog" name="Dmg_Red">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -29,17 +29,17 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Magic Resistance Grabber</string>
+   <string>Damage Reduction Grabber</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
-    <normaloff>:/images/null_feild.png</normaloff>:/images/null_feild.png</iconset>
+    <normaloff>:/images/burrow.png</normaloff>:/images/burrow.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QListWidget" name="magic_res_widget">
+      <widget class="QListWidget" name="dmg_red_widget">
        <property name="font">
         <font>
          <pointsize>12</pointsize>
@@ -107,14 +107,14 @@
        </property>
        <item>
         <property name="text">
-         <string>Cloak</string>
+         <string>Bristleback - Side</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
         </property>
         <property name="icon">
          <iconset resource="resource.qrc">
-          <normaloff>:/images/cloak.png</normaloff>:/images/cloak.png</iconset>
+          <normaloff>:/images/bristle_back.png</normaloff>:/images/bristle_back.png</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -122,14 +122,14 @@
        </item>
        <item>
         <property name="text">
-         <string>Hood of Defiance</string>
+         <string>Bristleback - Rear</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
         </property>
         <property name="icon">
          <iconset resource="resource.qrc">
-          <normaloff>:/images/hood.png</normaloff>:/images/hood.png</iconset>
+          <normaloff>:/images/bristle_back.png</normaloff>:/images/bristle_back.png</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -137,14 +137,14 @@
        </item>
        <item>
         <property name="text">
-         <string>Glimmer Cape</string>
+         <string>Centaur Warrunner - Stampede</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
         </property>
         <property name="icon">
          <iconset resource="resource.qrc">
-          <normaloff>:/images/glimmer.png</normaloff>:/images/glimmer.png</iconset>
+          <normaloff>:/images/stampede.png</normaloff>:/images/stampede.png</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -152,14 +152,14 @@
        </item>
        <item>
         <property name="text">
-         <string>Glimmer Cape - Glimmer</string>
+         <string>Io - Overcharge</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
         </property>
         <property name="icon">
          <iconset resource="resource.qrc">
-          <normaloff>:/images/glimmer.png</normaloff>:/images/glimmer.png</iconset>
+          <normaloff>:/images/overcharge.png</normaloff>:/images/overcharge.png</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -167,19 +167,14 @@
        </item>
        <item>
         <property name="text">
-         <string>Pipe Of Insight W/Aura</string>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
+         <string>Medusa - Mana Shield</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
         </property>
         <property name="icon">
          <iconset resource="resource.qrc">
-          <normaloff>:/images/magic_res.png</normaloff>:/images/magic_res.png</iconset>
+          <normaloff>:/images/dmg_reduction.png</normaloff>:/images/dmg_reduction.png</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -187,14 +182,14 @@
        </item>
        <item>
         <property name="text">
-         <string>Pipe Of Insight Aura</string>
+         <string>Nyx Assassin - Burrow</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
         </property>
         <property name="icon">
          <iconset resource="resource.qrc">
-          <normaloff>:/images/magic_res.png</normaloff>:/images/magic_res.png</iconset>
+          <normaloff>:/images/burrow.png</normaloff>:/images/burrow.png</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -202,14 +197,14 @@
        </item>
        <item>
         <property name="text">
-         <string>Anti-Mage - Spell Sheild</string>
+         <string>Spectre - Dispersion</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
         </property>
         <property name="icon">
          <iconset resource="resource.qrc">
-          <normaloff>:/images/spell_sheild.png</normaloff>:/images/spell_sheild.png</iconset>
+          <normaloff>:/images/dispersion.png</normaloff>:/images/dispersion.png</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -217,7 +212,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Anti-Mage - Spell Sheild Talent</string>
+         <string>Spectre - Dispersion Talent</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
@@ -232,14 +227,14 @@
        </item>
        <item>
         <property name="text">
-         <string>Huskar - Berserker's Blood</string>
+         <string>Ursa - Enrage</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
         </property>
         <property name="icon">
          <iconset resource="resource.qrc">
-          <normaloff>:/images/berserkers_blood.png</normaloff>:/images/berserkers_blood.png</iconset>
+          <normaloff>:/images/enrage.png</normaloff>:/images/enrage.png</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -247,119 +242,14 @@
        </item>
        <item>
         <property name="text">
-         <string>Pudge - Flesh Heap</string>
+         <string>Visage - Gravekeeper's Cloak</string>
         </property>
         <property name="checkState">
          <enum>Unchecked</enum>
         </property>
         <property name="icon">
          <iconset resource="resource.qrc">
-          <normaloff>:/images/flesh_heap.png</normaloff>:/images/flesh_heap.png</iconset>
-        </property>
-        <property name="flags">
-         <set>ItemIsSelectable|ItemIsEnabled</set>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Rubick - Null Field</string>
-        </property>
-        <property name="checkState">
-         <enum>Unchecked</enum>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/images/null_feild.png</normaloff>:/images/null_feild.png</iconset>
-        </property>
-        <property name="flags">
-         <set>ItemIsSelectable|ItemIsEnabled</set>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Rubick - Null Field Talent</string>
-        </property>
-        <property name="checkState">
-         <enum>Unchecked</enum>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/images/leveled_talent.png</normaloff>:/images/leveled_talent.png</iconset>
-        </property>
-        <property name="flags">
-         <set>ItemIsSelectable|ItemIsEnabled</set>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Spirit Bear - Demolish</string>
-        </property>
-        <property name="checkState">
-         <enum>Unchecked</enum>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/images/bear_res.png</normaloff>:/images/bear_res.png</iconset>
-        </property>
-        <property name="flags">
-         <set>ItemIsSelectable|ItemIsEnabled</set>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Viper - Corrosive Skin</string>
-        </property>
-        <property name="checkState">
-         <enum>Unchecked</enum>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/images/corrosive_skin.png</normaloff>:/images/corrosive_skin.png</iconset>
-        </property>
-        <property name="flags">
-         <set>ItemIsSelectable|ItemIsEnabled</set>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Viper - Corrosive Skin Talent</string>
-        </property>
-        <property name="checkState">
-         <enum>Unchecked</enum>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/images/leveled_talent.png</normaloff>:/images/leveled_talent.png</iconset>
-        </property>
-        <property name="flags">
-         <set>ItemIsSelectable|ItemIsEnabled</set>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Keeper Of The Light - Talent</string>
-        </property>
-        <property name="checkState">
-         <enum>Unchecked</enum>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/images/leveled_talent.png</normaloff>:/images/leveled_talent.png</iconset>
-        </property>
-        <property name="flags">
-         <set>ItemIsSelectable|ItemIsEnabled</set>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Earthshaker Talent</string>
-        </property>
-        <property name="checkState">
-         <enum>Unchecked</enum>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/images/leveled_talent.png</normaloff>:/images/leveled_talent.png</iconset>
+          <normaloff>:/images/gravekeepers_cloak.png</normaloff>:/images/gravekeepers_cloak.png</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -370,7 +260,7 @@
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QDoubleSpinBox" name="magic_res_value">
+        <widget class="QDoubleSpinBox" name="dmg_red_value">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -413,7 +303,7 @@
           <double>-100.000000000000000</double>
          </property>
          <property name="value">
-          <double>25.000000000000000</double>
+          <double>0.000000000000000</double>
          </property>
         </widget>
        </item>
@@ -440,32 +330,32 @@
   <connection>
    <sender>open_close</sender>
    <signal>accepted()</signal>
-   <receiver>Magic_Res</receiver>
+   <receiver>Dmg_Red</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>210</x>
+     <x>181</x>
      <y>598</y>
     </hint>
     <hint type="destinationlabel">
-     <x>428</x>
-     <y>510</y>
+     <x>405</x>
+     <y>468</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>open_close</sender>
    <signal>rejected()</signal>
-   <receiver>Magic_Res</receiver>
+   <receiver>Dmg_Red</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>285</x>
-     <y>607</y>
+     <x>288</x>
+     <y>598</y>
     </hint>
     <hint type="destinationlabel">
-     <x>376</x>
-     <y>530</y>
+     <x>381</x>
+     <y>482</y>
     </hint>
    </hints>
   </connection>

@@ -24,5 +24,13 @@
         <file>images/null_feild.png</file>
         <file>images/spell_sheild.png</file>
         <file>images/glimmer.png</file>
+        <file>images/borrowed_time.png</file>
+        <file>images/bristle_back.png</file>
+        <file>images/burrow.png</file>
+        <file>images/dispersion.png</file>
+        <file>images/enrage.png</file>
+        <file>images/gravekeepers_cloak.png</file>
+        <file>images/stampede.png</file>
+        <file>images/overcharge.png</file>
     </qresource>
 </RCC>

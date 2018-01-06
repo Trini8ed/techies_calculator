@@ -59,15 +59,18 @@ scenerios s3;
 
 Techies_Main::Techies_Main(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::Techies_Main)
+    ui(new Ui::Techies_Main),
+    _mag(nullptr),
+    _dmg(nullptr)
 {
     ui->setupUi(this);
+
     setWindowIcon(QIcon("techies.ico"));
 
     QString name = "Techies Damage Calculator";
     this->setWindowTitle(name);
 
-    setWindowFlags(Qt::WindowStaysOnTopHint);
+//    setWindowFlags(Qt::WindowStaysOnTopHint);
 
     //Update Profile Data
 
@@ -489,6 +492,9 @@ void Techies_Main::on_disable_clicked()
         s1 = cleared;
         s1.name = cleared.name + " " + QVariant(1).toString();
 
+        //Disable Click Area
+        ui->frame_1->setEnabled(false);
+
         ui->s1_text->setText(s1.name);
         ui->s1_prox_qty->setText(QVariant(s1.prox_qty).toString());
         ui->s1_remote_qty->setText(QVariant(s1.remote_qty).toString());
@@ -505,6 +511,9 @@ void Techies_Main::on_disable_clicked()
     else if(ui->save_profile->currentIndex() == 1){
         s2 = cleared;
         s2.name = cleared.name + " " + QVariant(2).toString();
+
+        //Disable Click Area
+        ui->frame_2->setEnabled(false);
 
         ui->s2_text->setText(s2.name);
         ui->s2_prox_qty->setText(QVariant(s2.prox_qty).toString());
@@ -678,19 +687,58 @@ void Techies_Main::on_s3_mag_res_box_valueChanged(double arg1)
 
 void Techies_Main::on_s3_dmg_red_box_valueChanged(double arg1)
 {
+
     s3.res.dmg_red = arg1 / 100.0;
     s3_qty_calc();
 }
 
 void Techies_Main::on_magic_popout_clicked()
 {
-    Magic_Res magic_res;
-    magic_res.Program = this;
-    magic_res.setModal(true);
-    magic_res.exec();
+    if (!_mag)
+    {
+        _mag = new Magic_Res(this);
+
+        connect(_mag, &Magic_Res::notifyMessageSentMag,
+                this, &Techies_Main::onMessageSentMag);
+    }
+
+    _mag->clear_settings();
+    _mag->show();
+
 }
 
 void Techies_Main::magic_res(double arg1)
 {
-    ui->magic_res->setValue(arg1);
+    input.mag_res = (arg1);
+    ui->magic_res->setValue(arg1 * 100.0);
+}
+
+void Techies_Main::onMessageSentMag(const double & arg1)
+{
+    magic_res(arg1);
+}
+
+void Techies_Main::on_dmg_red_popout_clicked()
+{
+    if (!_dmg)
+    {
+        _dmg = new Dmg_Red(this);
+
+        connect(_dmg, &Dmg_Red::notifyMessageSentDmg,
+                this, &Techies_Main::onMessageSentDmg);
+    }
+
+    _dmg->clear_settings();
+    _dmg->show();
+}
+
+void Techies_Main::dmg_red(double arg1)
+{
+    input.dmg_red = (arg1);
+    ui->dmg_red->setValue(arg1 * 100.0);
+}
+
+void Techies_Main::onMessageSentDmg(const double & arg1)
+{
+    dmg_red(arg1);
 }

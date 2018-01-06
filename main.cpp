@@ -1,5 +1,6 @@
-#include "Techies_Main.h"
 #include <QApplication>
+#include "Techies_Main.h"
+#include "Magic_Res.h"
 
 int main(int argc, char *argv[])
 {

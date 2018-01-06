@@ -4,8 +4,11 @@
 #include <iostream>
 #include <QMainWindow>
 #include <QDialog>
+#include <QObject>
+#include <QWidget>
 #include "About.h"
 #include "Magic_Res.h"
+#include "Dmg_Red.h"
 
 namespace Ui {
 class Techies_Main;
@@ -18,14 +21,12 @@ class Techies_Main : public QMainWindow
 public:
     explicit Techies_Main(QWidget *parent = 0);
     ~Techies_Main();
-    friend void Magic_Res::do_magic();
-	
-private slots:
-    void magic_res(double arg1);
 
-    void scenerio_updater();
+private slots:
 
     void updater();
+
+    void scenerio_updater();
 
     void hp_update();
 
@@ -46,8 +47,6 @@ private slots:
     void on_blast_off_level_up_clicked();
 
     void on_remote_level_up_clicked();
-
-    void on_magic_res_valueChanged(double arg1);
 
     void on_dmg_red_valueChanged(double arg1);
 
@@ -99,8 +98,23 @@ private slots:
 
     void on_magic_popout_clicked();
 
+    void on_magic_res_valueChanged(double arg1);
+
+    void magic_res(double arg1);
+
+    void dmg_red(double arg1);
+
+    void onMessageSentMag(const double &);
+
+    void onMessageSentDmg(const double &);
+
+    void on_dmg_red_popout_clicked();
+
 private:
     Ui::Techies_Main *ui;
+    Magic_Res* _mag;
+    Dmg_Red* _dmg;
+
 };
 
 #endif // TECHIES_MAIN_H

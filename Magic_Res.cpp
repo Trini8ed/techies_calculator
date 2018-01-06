@@ -33,7 +33,7 @@ struct global {
     mag_abilities abilities;
 };
 
-double global_mag_res;
+double global_mag_res = 0.25;
 
 const global array = {
      //Cloak
@@ -62,79 +62,83 @@ const global array = {
      0.5}
 };
 
-double global_magic_res = 0.25;
-
 Magic_Res::Magic_Res(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Magic_Res)
+    mag(new Ui::Magic_Res)
 {
-    ui->setupUi(this);
+    mag->setupUi(this);
 
-    setWindowFlags(Qt::WindowStaysOnTopHint);
+//    setWindowFlags(Qt::WindowStaysOnTopHint);
+
+    mag->magic_res_value->setValue(global_mag_res * 100.0);
 }
 
 Magic_Res::~Magic_Res()
 {
-    delete ui;
+    delete mag;
 }
 
 void Magic_Res::do_magic()
 {
-    double mag_res = 1 - global_magic_res;
+    double mag_res = 1 - 0.25;
 
-    if (ui->magic_res_widget->item(0)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(0)->checkState() == Qt::Checked){
         mag_res *= (1 - array.items.cloak);
     }
-    if (ui->magic_res_widget->item(1)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(1)->checkState() == Qt::Checked){
         mag_res *= (1 - array.items.hood);
     }
-    if (ui->magic_res_widget->item(2)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(2)->checkState() == Qt::Checked){
         mag_res *= (1 - array.items.glimmer.not_leveled);
     }
-    if (ui->magic_res_widget->item(3)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(3)->checkState() == Qt::Checked){
         mag_res *= (1 - array.items.glimmer.leveled);
     }
-    if (ui->magic_res_widget->item(4)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(4)->checkState() == Qt::Checked){
         mag_res *= (1 - array.items.pipe.not_leveled);
     }
-    if (ui->magic_res_widget->item(5)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(5)->checkState() == Qt::Checked){
         mag_res *= (1 - array.items.pipe.leveled);
     }
-    if (ui->magic_res_widget->item(6)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(6)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.antimage.not_leveled);
     }
-    if (ui->magic_res_widget->item(7)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(7)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.antimage.leveled);
     }
-    if (ui->magic_res_widget->item(8)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(8)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.huskar);
     }
-    if (ui->magic_res_widget->item(9)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(9)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.pudge);
     }
-    if (ui->magic_res_widget->item(10)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(10)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.rubick.not_leveled);
     }
-    if (ui->magic_res_widget->item(11)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(11)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.rubick.leveled);
     }
-    if (ui->magic_res_widget->item(12)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(12)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.bear);
     }
-    if (ui->magic_res_widget->item(13)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(13)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.viper.not_leveled);
     }
-    if (ui->magic_res_widget->item(14)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(14)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.viper.leveled);
     }
-    if (ui->magic_res_widget->item(15)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(15)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.kotl);
     }
-    if (ui->magic_res_widget->item(16)->checkState() == Qt::Checked){
+    if (mag->magic_res_widget->item(16)->checkState() == Qt::Checked){
         mag_res *= (1 - array.abilities.earthshaker);
     }
-    ui->doubleSpinBox->setValue((1 - mag_res) * 100);
-    Program.magic_res( 1 - mag_res );
+
+    mag_res = 1 - mag_res;
+
+    mag->magic_res_value->setValue((mag_res) * 100);
+
+    global_mag_res = mag_res;
 }
 
 void Magic_Res::update(QListWidgetItem *item)
@@ -160,5 +164,16 @@ void Magic_Res::on_magic_res_widget_itemDoubleClicked(QListWidgetItem *item)
 
 void Magic_Res::on_open_close_accepted()
 {
+    emit notifyMessageSentMag(global_mag_res);
+    global_mag_res = 0.25;
+}
 
+void Magic_Res::clear_settings()
+{
+    global_mag_res = 0.25;
+    mag->magic_res_value->setValue(global_mag_res * 100.0);
+
+    for (int i = 0; i < 17; i++){
+        mag->magic_res_widget->item(i)->setCheckState(Qt::Unchecked);
+    }
 }
