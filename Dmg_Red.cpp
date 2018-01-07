@@ -2,7 +2,7 @@
 #include "ui_Dmg_Red.h"
 
 //_______________________
-//Magic Resistance Arrays
+//Damage Reduction Arrays
 //_______________________
 
 struct sub {
@@ -119,6 +119,8 @@ void Dmg_Red::on_open_close_accepted()
 {
     emit notifyMessageSentDmg(global_dmg_red);
     global_dmg_red = 0.0;
+
+    Dmg_Red();
 }
 
 void Dmg_Red::clear_settings()

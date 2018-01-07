@@ -703,8 +703,8 @@ void Techies_Main::on_magic_popout_clicked()
     }
 
     _mag->clear_settings();
+    _mag->setModal(true);
     _mag->show();
-
 }
 
 void Techies_Main::magic_res(double arg1)
@@ -729,6 +729,7 @@ void Techies_Main::on_dmg_red_popout_clicked()
     }
 
     _dmg->clear_settings();
+    _dmg->setModal(true);
     _dmg->show();
 }
 
@@ -741,4 +742,15 @@ void Techies_Main::dmg_red(double arg1)
 void Techies_Main::onMessageSentDmg(const double & arg1)
 {
     dmg_red(arg1);
+}
+
+void Techies_Main::on_screenshot_clicked()
+{
+    QPixmap original = QGuiApplication::primaryScreen()->grabWindow(0);
+    QPixmap scaledSize = original.scaled(QSize(640,360));
+
+    ui->screenshot_img->setPixmap(scaledSize);
+
+    Screen_Data *Test = new Screen_Data();
+    Test->QPixMap_Data(original);
 }

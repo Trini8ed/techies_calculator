@@ -2,10 +2,15 @@
 #define TECHIES_MAIN_H
 
 #include <iostream>
-#include <QMainWindow>
+
 #include <QDialog>
 #include <QObject>
 #include <QWidget>
+#include <QPixmap>
+#include <QFile>
+#include <QScreen>
+#include <QWindow>
+#include "Screen_Data.h"
 #include "About.h"
 #include "Magic_Res.h"
 #include "Dmg_Red.h"
@@ -21,6 +26,8 @@ class Techies_Main : public QMainWindow
 public:
     explicit Techies_Main(QWidget *parent = 0);
     ~Techies_Main();
+
+    void QPixMap_Data(QPixmap game);
 
 private slots:
 
@@ -109,6 +116,8 @@ private slots:
     void onMessageSentDmg(const double &);
 
     void on_dmg_red_popout_clicked();
+
+    void on_screenshot_clicked();
 
 private:
     Ui::Techies_Main *ui;

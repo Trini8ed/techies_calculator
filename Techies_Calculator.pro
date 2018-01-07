@@ -28,13 +28,15 @@ SOURCES += \
         Techies_Main.cpp \
     About.cpp \
     Magic_Res.cpp \
-    Dmg_Red.cpp
+    Dmg_Red.cpp \
+    Screen_Data.cpp
 
 HEADERS += \
         Techies_Main.h \
     About.h \
     Magic_Res.h \
-    Dmg_Red.h
+    Dmg_Red.h \
+    Screen_Data.h
 
 FORMS += \
         Techies_Main.ui \
